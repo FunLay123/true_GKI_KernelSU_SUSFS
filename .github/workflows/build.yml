@@ -446,6 +446,12 @@ jobs:
             echo "KSU_LATEST_COMMIT_DATE=未知" >> $GITHUB_ENV
           fi
 
+      - name: Fix SukiSU USER_ARG_NULL type mismatch
+        run: |
+          echo "🔧 Applying USER_ARG_NULL fix for SukiSU + SUSFS compatibility..."
+          sed -i 's/USER_ARG_NULL, gfp);$/\&USER_ARG_NULL, gfp);/g' \
+            "$KERNEL_ROOT/common/drivers/kernelsu/sulog/event.c"
+          echo "✅ Fix applied to event.c"
       - name: 配置 SukiSU 管理器信息
         if: inputs.ksu_variant == 'SukiSU'
         working-directory: ${{ env.KERNEL_ROOT }}/KernelSU
